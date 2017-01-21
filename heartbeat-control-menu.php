@@ -1,6 +1,18 @@
 <?php
+	// Makes sure the plugin is defined before trying to use it
+	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+	}
+	
+	if ( is_plugin_active_for_network( 'heartbeat-control/heartbeat-control.php' ) ) {
+		// Plugin is network activated
+		add_action( 'network_admin_menu', 'heartbeat_control_menu_page' );
+	} else {
+		//Plugin is on single site
+		add_action( 'admin_menu', 'heartbeat_control_menu_page' );
+	}
+	
 
-	add_action( 'admin_menu', 'heartbeat_control_menu_page' );
 	/**
 	 * heartbeat_control_menu function.
 	 *
@@ -10,7 +22,7 @@
 	function heartbeat_control_menu_page() {
 
 		add_submenu_page(
-			'options-general.php',
+			'settings.php',
 			__( 'Heartbeat Control', 'heartbeat-control' ),
 			__( 'Heartbeat Control', 'heartbeat-control' ),
 			'manage_options',
@@ -28,11 +40,11 @@
 		?>
 
 		<?php if ( isset( $_POST['heartbeat_location'] ) && in_array( $_POST['heartbeat_location'], $heartbeat_control_options ) ) {
-			update_option( 'heartbeat_location', $_POST['heartbeat_location'] );
+			update_site_option( 'heartbeat_location', $_POST['heartbeat_location'] );
 		}?>
 
 		<?php if ( isset( $_POST['heartbeat_frequency'] ) && in_array( $_POST['heartbeat_frequency'], $heartbeat_frequency_options ) ) {
-			update_option( 'heartbeat_frequency', $_POST['heartbeat_frequency'] );
+			update_site_option( 'heartbeat_frequency', $_POST['heartbeat_frequency'] );
 		}?>
 
 		<div class="wrap">
@@ -45,7 +57,7 @@
 				<tr valign="top">
 					<th scope="row">Control heartbeat locations:</th>
 
-					<?php $heartbeat_setting = get_option( 'heartbeat_location' ) ?>
+					<?php $heartbeat_setting = get_site_option( 'heartbeat_location' ) ?>
 
 					<td>
 						<label>
@@ -67,7 +79,7 @@
 				<tr valign="top">
 					<th scope="row">Override heartbeat frequency:</th>
 
-					<?php $heartbeat_frequency = get_option( 'heartbeat_frequency' ) ?>
+					<?php $heartbeat_frequency = get_site_option( 'heartbeat_frequency' ) ?>
 
 					<td>
 						<label>
@@ -90,11 +102,6 @@
 			<?php submit_button(); ?>
         </form>
         <p><strong>Did this plugin help you?  Please consider donating to help keep Heartbeat Control updated:</strong></p>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-            <input type="hidden" name="cmd" value="_s-xclick">
-            <input type="hidden" name="hosted_button_id" value="AV29EW5YCT2SG">
-            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-        </form>
+        <a class="button button-primary" href="http://jeffmatson.net/donate">Donate</a>
 	<?php
 	}
