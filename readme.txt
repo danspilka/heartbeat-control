@@ -1,5 +1,5 @@
 === Heartbeat Control ===
-Contributors: JeffMatson
+Contributors: JeffMatson, DanSpilka
 Donate link: http://jeffmatson.net/donate
 Tags: heartbeat, admin-ajax, server resources
 Requires at least: 2.8
@@ -35,6 +35,9 @@ All options are located within Tools > Heartbeat Control.
 If you commonly leave your WordPress admin up for long periods of time, especially while writing or editing a post, the repeated POST requests can cause high resource usage.  To avoid this, the heartbeat can be modified or even disabled to lower your server resource usage.
 
 == Changelog ==
+= 1.0.4 =
+* Multisite functionality
+
 = 1.0.2 =
 * Bumped tested version
 * Added donation button
